@@ -1,0 +1,1 @@
+export const ACTIVITY_LOADER = 'activityLoader';
