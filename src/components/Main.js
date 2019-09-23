@@ -1,24 +1,72 @@
-import React from 'react';
-import { View, Text, Image, ScrollView } from 'react-native'
+import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { connect } from 'react-redux'
+import TabNavigator from 'react-native-tab-navigator';
+import { colors } from '../../res/colors';
 
-const Main = (props) => (
-    <ScrollView>
-        <View
-            style={{ flex: 1, alignItems: 'center', padding: 16 }} >
-            <Text style={{ paddingTop: 32, fontSize: 18 }}>StarBus</Text>
-            <Text style={{ fontSize: 14 }}>Versão 2.0.0</Text>
+import Map from './Map';
+import About from './About';
 
-            <Text style={{ textAlign: 'center', paddingVertical: 10 }}>Tenha a mão as informações do transporte público de Teresina.
-        StarBus permite que usuários possam ver paradas próximas, buscar por uma linha,
-        saber como chegar a um local, ver onde está seu ônibus, compartilhar sua visão do meio que interagem diariamente e etc.
-        Os dados de ônibus, paradas, linhas e rastreamento mostrados no aplicativo são disponibilizados, mantidos e atualizados
-        pela STRANS-PI. O StarBus é teresinense, assim como você e desejamos que você tenha a melhor experiência. Bem-vindo a bordo.</Text>
+import { changeTab, showLoader } from '../actions/MainActions'
+
+class Main extends Component {
+
+    // render() {
+    //     return (
+    //         <View style={{ flex: 1, backgroundColor: colors.backgroundColor }}>
+
+    //             <Map/>
+    //         </View>
+    //     )
+    // }
+
+    render() {
+        return (
+
+            <View style={{ flex: 1, backgroundColor: colors.backgroundColor }}>
 
 
-            
 
-            <Text >© 2016~2018  StarBus Inc</Text>
-        </View>
-    </ScrollView>
+                <TabNavigator style={{ flex: 1, }}
+                    tabBarStyle={{ height: 60 }}
+                    sceneStyle={{ marginBottom: 10 }}>
+                    <TabNavigator.Item
+                        selected={this.props.selectedTab === 'home'}
+                        title="Mapa"
+                        selectedTitleStyle={{ color: colors.primary_color }}
+                        renderIcon={() => <Icon name="map" size={30} color={colors.color_icon_unselected} />}
+                        renderSelectedIcon={() => <Icon name="map" size={40} color={colors.color_icon_selected} />}
+                        onPress={() => this.props.changeTab('home')}>
+                        <Map />
+                    </TabNavigator.Item>
+
+                    <TabNavigator.Item
+                        selected={this.props.selectedTab === 'about'}
+                        title="Sobre"
+                        selectedTitleStyle={{ color: colors.color_icon_selected }}
+                        titleStyle={{ color: colors.color_icon_unselected }}
+                        renderIcon={() => <Icon name="notifications" size={30} color={colors.color_icon_unselected} />}
+                        renderSelectedIcon={() => <Icon name="notifications" size={40} color={colors.color_icon_selected} />}
+                        onPress={() => this.props.changeTab('about')}>
+                        <About />
+                    </TabNavigator.Item>
+
+                </TabNavigator>
+
+            </View>
+
+
+        )
+
+    }
+}
+
+mapStateToProps = state => (
+    {
+        selectedTab: state.MainReducer.selectedTab,
+    }
 )
-export default Main
+
+export default connect(mapStateToProps, { changeTab })(Main);
+
