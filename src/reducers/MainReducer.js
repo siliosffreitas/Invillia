@@ -9,6 +9,7 @@ import {
 const INITIAL_STATE = {
     showLoader: false,
     selectedTab: 'home',
+    titleSelectedTab: 'Locais',
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,17 +20,14 @@ export default (state = INITIAL_STATE, action) => {
         case CHANGE_TAB_SELECTED:
             let titleTab;
             switch (action.payload) {
-                case 'browser':
-                    titleTab = "Explorar";
+                case 'home':
+                    titleTab = "Locais";
                     break;
-                case 'myplaces':
-                    titleTab = "Meus lugares";
-                    break;
-                case 'mywallet':
-                    titleTab = "Minha carteira";
+                case 'about':
+                    titleTab = "Informações";
                     break;
                 default:
-                    titleTab = "StarBus";
+                    titleTab = "Locais";
             }
             // Actions.refresh({ key: 'main', title: titleTab });
             return { ...state, selectedTab: action.payload, titleSelectedTab: titleTab }

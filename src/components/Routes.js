@@ -26,7 +26,7 @@ class Routes extends Component {
 }
 mapStateToProps = state => (
     {
-        // titleSelectedTab: state.MainReducer.titleSelectedTab,
+        titleSelectedTab: state.MainReducer.titleSelectedTab,
         // selectedTab: state.MainReducer.selectedTab,
     }
 )
