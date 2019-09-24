@@ -4,12 +4,14 @@ import { AsyncStorage } from 'react-native';
 import {
     ACTIVITY_LOADER,
     CHANGE_TAB_SELECTED,
+    CHANGE_USER_LAST_LOCATION
 } from '../actions/types';
 
 const INITIAL_STATE = {
     showLoader: false,
     selectedTab: 'home',
     titleSelectedTab: 'Locais',
+    userLastLocation: null
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -31,6 +33,8 @@ export default (state = INITIAL_STATE, action) => {
             }
             // Actions.refresh({ key: 'main', title: titleTab });
             return { ...state, selectedTab: action.payload, titleSelectedTab: titleTab }
+        case CHANGE_USER_LAST_LOCATION:
+            return { ...state, userLastLocation: action.payload }
         default:
             return state;
     }
