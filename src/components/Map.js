@@ -55,7 +55,7 @@ class Map extends Component {
                         }}
                         onCalloutPress={() => this.openPlace(local)}
                         description={local.vicinity}
-
+                        image={local.icon}
                         title={local.name}
                     />
                 ))
@@ -64,6 +64,7 @@ class Map extends Component {
     }
 
     openPlace(place) {
+        // console.log(place)
         Actions.local({ place })
     }
 
@@ -125,9 +126,10 @@ class Map extends Component {
                     style={{
                         flex: 1
                     }}
+                    showsUserLocation={true}
                     ref={(ref) => { this.mapRef = ref }}>
                     {this.renderNextsStops()}
-                    {this.renderMarkerUser()}
+                    {/* {this.renderMarkerUser()} */}
                     {/* {this.renderPolylines()}
                     {this.renderTrack()} */}
                 </MapView>
@@ -174,16 +176,6 @@ mapStateToProps = state => (
     {
         userLastLocation: state.MainReducer.userLastLocation,
         placesFound: state.PlaceReducer.placesFoundSearch
-        // nextsStops: state.StopReducer.nextsStops,
-        // currentLineTrack: state.LineReducer.currentLineTrack,
-        // currentLineTrackCoords: state.LineReducer.currentLineTrackCoords,
-        // track: state.LineReducer.track,
-        // listWifiBus: state.BusReducer.listWifiBus,
-        // listAccessibleBus: state.BusReducer.listAccessibleBus,
-        // listACBus: state.BusReducer.listACBus,
-        // defaultTimeTrack: state.MainReducer.defaultTimeTrack,
-        // defaultDistSearch: state.MainReducer.defaultDistSearch,
-        // notice: state.MainReducer.notice
     }
 )
 
