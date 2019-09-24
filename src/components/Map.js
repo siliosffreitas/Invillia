@@ -6,6 +6,7 @@ import { consts } from '../util/consts'
 import Geolocation from '@react-native-community/geolocation';
 import { changeUserLastLocation } from '../actions/MainActions'
 import MapView, { Marker, Polyline } from 'react-native-maps'
+import { getPlaces } from '../actions/PlaceActions';
 
 class Map extends Component {
     componentWillMount() {
@@ -17,29 +18,16 @@ class Map extends Component {
 
         Geolocation.getCurrentPosition((info) => {
             this.props.showLoader(false)
-            alert('Usuário encontrado')
+            // alert('Usuário encontrado')
             console.log(info.coords)
             this.props.changeUserLastLocation(info.coords)
+
+            this.props.getPlaces(info.coords)
 
             // isNeedCalculateBounds = true
             // this.props.getStopsNexts(this.props.userLastLocation.latitude, this.props.userLastLocation.longitude, this.props.defaultDistSearch)    
 
         });
-        // navigator.geolocation.getCurrentPosition(
-        //     (position) => {
-        //         this.props.showLoader(false)
-        //         alert('Usuário encontrado')
-        //         // this.props.changeUserLastLocation(position.coords)
-
-        //         // isNeedCalculateBounds = true
-        //         // this.props.getStopsNexts(this.props.userLastLocation.latitude, this.props.userLastLocation.longitude, this.props.defaultDistSearch)
-        //     },
-        //     (error) => {
-        //         alert(error.message)
-        //         this.props.showLoader(false)
-        //     },
-        //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        // );
     }
 
     render() {
@@ -50,6 +38,73 @@ class Map extends Component {
             </View>
         );
     }
+
+
+
+    renderNextsStops() {
+
+        if (this.props.placesFound) {
+            return (
+                this.props.placesFound.map(local => (
+                    <Marker
+                        key={local.id}
+                        coordinate={{
+                            latitude: Number(local.geometry.location.lat),
+                            longitude: Number(local.geometry.location.lng),
+                        }}
+                        onCalloutPress={() => this.openStop(parada)}
+                        description={local.vicinity}
+
+                        title={local.name}
+                    />
+                ))
+            )
+
+        }
+
+        // if (this.props.nextsStops !== null) {
+        //     if (this.props.track != null && this.props.track.paradas) {
+        //         return (
+        //             this.props.track.paradas.map(parada => (
+        //                 <Marker
+        //                     key={parada.codigo}
+        //                     coordinate={{
+        //                         latitude: Number(parada.lat),
+        //                         longitude: Number(parada.long),
+        //                     }}
+        //                     onCalloutPress={() => this.openStop(parada)}
+        //                     description={parada.endereco}
+        //                     image={stopbus_green}
+        //                     title={`Parada #${parada.codigo} • ${parada.denominacao} • ${parseInt(parada.dist)}m`}
+        //                 />
+        //             ))
+        //         )
+        //     } else {
+        //         if (this.props.nextsStops.length === 0) {
+        //             alert("Nenhuma parada próxima da sua localização")
+        //         } else {
+        //             return (
+        //                 this.props.nextsStops.map(parada => (
+        //                     <Marker
+        //                         key={parada.codigo}
+        //                         coordinate={{
+        //                             latitude: Number(parada.lat),
+        //                             longitude: Number(parada.long),
+        //                         }}
+        //                         onCalloutPress={() => this.openStop(parada)}
+        //                         description={parada.endereco}
+        //                         image={stopbus_green}
+        //                         title={`Parada #${parada.codigo} • ${parada.denominacao} • ${parseInt(parada.dist)}m`}
+        //                     />
+        //                 ))
+        //             )
+        //         }
+        //     }
+
+        // }
+
+    }
+
 
     calculateBounds() {
 
@@ -62,15 +117,15 @@ class Map extends Component {
             }]
         }
 
-        // if (this.props.nextsStops != null) {
-        //     for (i = 0; i < this.props.nextsStops.length; i++) {
-        //         coords = [...coords,
-        //         {
-        //             latitude: Number(this.props.nextsStops[i].lat),
-        //             longitude: Number(this.props.nextsStops[i].long),
-        //         }]
-        //     }
-        // }
+        if (this.props.placesFound) {
+            for (i = 0; i < this.props.placesFound.length; i++) {
+                coords = [...coords,
+                {
+                    latitude: Number(this.props.placesFound[i].geometry.location.lat),
+                    longitude: Number(this.props.placesFound[i].geometry.location.lng),
+                }]
+            }
+        }
 
         // if (this.props.currentLineTrackCoords !== null) {
         //     for (i = 0; i < this.props.currentLineTrackCoords.length; i++) {
@@ -110,7 +165,7 @@ class Map extends Component {
                         flex: 1
                     }}
                     ref={(ref) => { this.mapRef = ref }}>
-                    {/* {this.renderNextsStops()} */}
+                    {this.renderNextsStops()}
                     {this.renderMarkerUser()}
                     {/* {this.renderPolylines()}
                     {this.renderTrack()} */}
@@ -157,6 +212,7 @@ class Map extends Component {
 mapStateToProps = state => (
     {
         userLastLocation: state.MainReducer.userLastLocation,
+        placesFound: state.PlaceReducer.placesFoundSearch
         // nextsStops: state.StopReducer.nextsStops,
         // currentLineTrack: state.LineReducer.currentLineTrack,
         // currentLineTrackCoords: state.LineReducer.currentLineTrackCoords,
@@ -170,4 +226,4 @@ mapStateToProps = state => (
     }
 )
 
-export default connect(mapStateToProps, { showLoader, changeUserLastLocation })(Map);
+export default connect(mapStateToProps, { showLoader, changeUserLastLocation, getPlaces })(Map);
