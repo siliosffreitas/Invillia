@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from 'react-native'
 import { showLoader } from '../actions/MainActions'
+import {Actions} from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { consts } from '../util/consts'
 import Geolocation from '@react-native-community/geolocation';
@@ -52,59 +53,19 @@ class Map extends Component {
                             latitude: Number(local.geometry.location.lat),
                             longitude: Number(local.geometry.location.lng),
                         }}
-                        onCalloutPress={() => this.openStop(parada)}
+                        onCalloutPress={() => this.openPlace(local)}
                         description={local.vicinity}
 
                         title={local.name}
                     />
                 ))
             )
-
         }
-
-        // if (this.props.nextsStops !== null) {
-        //     if (this.props.track != null && this.props.track.paradas) {
-        //         return (
-        //             this.props.track.paradas.map(parada => (
-        //                 <Marker
-        //                     key={parada.codigo}
-        //                     coordinate={{
-        //                         latitude: Number(parada.lat),
-        //                         longitude: Number(parada.long),
-        //                     }}
-        //                     onCalloutPress={() => this.openStop(parada)}
-        //                     description={parada.endereco}
-        //                     image={stopbus_green}
-        //                     title={`Parada #${parada.codigo} • ${parada.denominacao} • ${parseInt(parada.dist)}m`}
-        //                 />
-        //             ))
-        //         )
-        //     } else {
-        //         if (this.props.nextsStops.length === 0) {
-        //             alert("Nenhuma parada próxima da sua localização")
-        //         } else {
-        //             return (
-        //                 this.props.nextsStops.map(parada => (
-        //                     <Marker
-        //                         key={parada.codigo}
-        //                         coordinate={{
-        //                             latitude: Number(parada.lat),
-        //                             longitude: Number(parada.long),
-        //                         }}
-        //                         onCalloutPress={() => this.openStop(parada)}
-        //                         description={parada.endereco}
-        //                         image={stopbus_green}
-        //                         title={`Parada #${parada.codigo} • ${parada.denominacao} • ${parseInt(parada.dist)}m`}
-        //                     />
-        //                 ))
-        //             )
-        //         }
-        //     }
-
-        // }
-
     }
 
+    openPlace(place) {
+        Actions.local({ place })
+    }
 
     calculateBounds() {
 
@@ -137,7 +98,7 @@ class Map extends Component {
 
         // if (this.props.currentLineTrack.length === this.props.currentLineTrackCoords.length) {
         //     isNeedCalculateBounds = false
-        // }
+        // }``
 
         if (coords.length > 0 && this.mapRef != undefined) {
             // console.log(coords)
