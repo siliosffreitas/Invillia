@@ -32,6 +32,8 @@ class Map extends Component {
     }
 
     render() {
+        console.log('Map.render');
+        console.log(this.props.placesFound);
         return (
             <View style={{ flex: 1 }}>
                 {this.renderMap()}

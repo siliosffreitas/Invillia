@@ -1,6 +1,7 @@
 import {
     CHANGE_PLACES,
-    CHANGE_INFO_PLACE
+    CHANGE_INFO_PLACE,
+    RESET_INFO_PLACE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -13,7 +14,9 @@ export default (state = INITIAL_STATE, action) => {
         case CHANGE_PLACES:
             return { ...state, placesFoundSearch: action.payload }
         case CHANGE_INFO_PLACE:
-            return { ...state, placesFoundSearch: action.payload }
+            return { ...state, infoPlace: action.payload }
+        case RESET_INFO_PLACE:
+            return { ...state, infoPlace: null }
         default:
             return state;
     }

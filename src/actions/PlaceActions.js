@@ -6,7 +6,8 @@ import { consts } from '../util/consts'
 
 import {
     CHANGE_PLACES,
-    CHANGE_INFO_PLACE
+    CHANGE_INFO_PLACE,
+    RESET_INFO_PLACE
 } from './types'
 
 export const getPlaces = (info) => {
@@ -47,8 +48,8 @@ export const getInfoPlace = (place_id) => {
 }
 const getInfoPlaceSucess = (response, dispache) => {
     dispache(showLoader(false))
-    dispache(changePlacesSearch(response.data.results))
-    console.log(response.data.results)
+    dispache(changeInfoPlace(response.data.result))
+    console.log(response.data.result)
 }
 
 const defaultFail = (error, dispache) => {
@@ -68,5 +69,11 @@ export const changeInfoPlace = (infos) => {
     return {
         type: CHANGE_INFO_PLACE,
         payload: infos
+    }
+}
+
+export const resetInfoPlace = () => {
+    return {
+        type: RESET_INFO_PLACE
     }
 }
