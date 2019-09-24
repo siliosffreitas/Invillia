@@ -17,7 +17,7 @@ const About = (props) => (
 
 
 
-            <Text >© 2016~2018  StarBus Inc</Text>
+            <Text >© 2016~2018</Text>
         </View>
     </ScrollView>
 )
