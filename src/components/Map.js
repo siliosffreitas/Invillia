@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from 'react-native'
 import { showLoader } from '../actions/MainActions'
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { consts } from '../util/consts'
 import Geolocation from '@react-native-community/geolocation';
 import { changeUserLastLocation } from '../actions/MainActions'
-import MapView, { Marker, Polyline } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { getPlaces } from '../actions/PlaceActions';
 
 class Map extends Component {
